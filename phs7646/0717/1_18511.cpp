@@ -17,7 +17,6 @@ int main() {
     vector<int> v(K);
     for(int i = 0;i < K;i++) cin >> v[i];
     sort(v.begin(),v.end());
-    int Nvalue = 0;
     int cur = 0;
     int len = 0;
     int _N = Nvalue;
