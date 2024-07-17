@@ -11,19 +11,27 @@ int tenpow(int n) {
 }
 
 int main() {
-    string N;
+    int Nvalue;
     int K;
-    cin >> N >> K;
+    cin >> Nvalue >> K;
     vector<int> v(K);
     for(int i = 0;i < K;i++) cin >> v[i];
     sort(v.begin(),v.end());
     int Nvalue = 0;
     int cur = 0;
-    int len = N.size();
+    int len = 0;
+    int _N = Nvalue;
+    while(_N > 0) {
+        _N /= 10;
+        len++;
+    }
+    
+    //cur을 N의 길이와 같이 v[0]로 꽉채운다
     for(int i = 0;i < len;i++) {
-        Nvalue = Nvalue*10 + (N[i]-'0');
         cur = cur*10 + v[0];
     }
+
+    //cur이 N보다 크다면 길이를 한칸 줄여야한다
     if(cur > Nvalue) {
         cur -= v[0] * tenpow(len-1);
         len--;
