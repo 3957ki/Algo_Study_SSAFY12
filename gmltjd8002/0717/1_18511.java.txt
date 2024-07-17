@@ -1,0 +1,30 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+	static int N,K,res;
+	static int[] arr;
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken()); // 자리수
+		arr = new int[K]; // K 값 저장할 배열
+		st = new StringTokenizer(br.readLine());
+		for(int i=0; i<K;i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		Arrays.sort(arr); // 배열 정렬(오름차순)
+		dfs(0);
+		System.out.println(res);
+	}
+	
+	public static void dfs(int x) {
+		if(x>N) return; // arr을 이용해 조합한 x가 N보다 큰 경우
+		if(res < x) res = x; // 조건을 만족하는 큰 수 갱신 시
+		
+		for(int i = K-1;i>=0;i--) { // 일의자리부터 값을 채워넣는다, 10^0 =1 이므로 i는 0까지
+			dfs(x * 10 + arr[i]); // 한자리 및 두자리부터 시작하며, 이전값에 10을 곱해주고 기존의 값을 더한다
+		}
+	}
+}

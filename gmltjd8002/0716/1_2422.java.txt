@@ -1,0 +1,34 @@
+// 1번
+import java.util.*;
+import java.io.*;
+class Main{
+    
+    public static void main(String args[]) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken()); // 아이스크림 개수
+        int M = Integer.parseInt(st.nextToken()); // 불가능한 조합 개수
+        boolean[][] cant = new boolean[N+1][N+1]; // 불가능한 조합을 저장할 배열
+        
+        for(int i =0; i<M;i++){ // 불가능한 배열 입력 받기
+            StringTokenizer st1 = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st1.nextToken()); // 안되는 번호 1
+            int b = Integer.parseInt(st1.nextToken()); // 안되는 번호 2
+            cant[a][b] = true;
+            cant[b][a] = true;
+        }
+        
+        int cnt =0; // 가능한 조합 개수
+        for(int i = 1; i<=N;i++){ // 1번~N-1번까지의 번호
+            for(int j =i+1; j<=N;j++){ // 2번~N번까지의 번호
+                if(cant[i][j]) continue; // 불가능한 조합이 저장된 경우
+                for(int k = j+1; k<=N;k++){ // 가능한 조합일 때
+                    if(!cant[j][k] && !cant[i][k]){ // cant배열엔 담을 수 없는 번호의 조합임
+                        cnt++;   // i,j,k는 서로 조합이 가능한 번호, cant배열내부에 있는지 확인
+                    }
+                }
+            }
+        }
+        System.out.println(cnt);
+    }
+}
