@@ -23,6 +23,8 @@
 8. 백승훈_
 9. 김다정_
 
+![Data Chart](./temp.png)
+
 ### Non SSAFY
 
 0. 이름 (백준아이디)
