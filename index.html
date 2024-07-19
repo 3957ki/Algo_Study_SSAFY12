@@ -28,7 +28,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 <body>
-    <h2>데이터 시각화</h2>
     <table id="data-table">
         <thead>
             <tr id="header-row">
@@ -74,18 +73,17 @@
                                     td.textContent = cell;
                                     tr.appendChild(td);
                                 } else {
-                                    for (let i = 0; i < 4; i++) {
-                                        const td = document.createElement('td');
-                                        const cellValue = cell || 0; // 값이 없으면 0으로 설정
-                                        if (cellValue == 1) {
-                                            td.classList.add('green');
-                                        } else if (cellValue == 2) {
-                                            td.classList.add('yellow');
-                                        } else {
-                                            td.classList.add('grey');
-                                        }
-                                        tr.appendChild(td);
+                                    const td = document.createElement('td');
+                                    const cellValue = cell || 0; // 값이 없으면 0으로 설정
+                                    if (cellValue == 1) {
+                                        td.classList.add('green');
+                                    } else if (cellValue == 2) {
+                                        td.classList.add('yellow');
+                                    } else {
+                                        td.classList.add('grey');
                                     }
+                                    tr.appendChild(td);
+                                    
                                 }
                             });
                             tableBody.appendChild(tr);
