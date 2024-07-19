@@ -28,6 +28,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 <body>
+    <h2>데이터 시각화</h2>
     <table id="data-table">
         <thead>
             <tr id="header-row">
@@ -43,10 +44,10 @@
             fetch('data.xlsx')
                 .then(response => response.arrayBuffer())
                 .then(data => {
-                    const workbook = XLSX.read(data, { type: 'array' });
+                    const workbook = XLSX.read(new Uint8Array(data), { type: 'array' });
                     const firstSheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: 0 });
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
                     const headerRow = document.getElementById('header-row');
                     const tableBody = document.querySelector('#data-table tbody');
@@ -73,17 +74,18 @@
                                     td.textContent = cell;
                                     tr.appendChild(td);
                                 } else {
-                                    const td = document.createElement('td');
-                                    const cellValue = cell || 0; // 값이 없으면 0으로 설정
-                                    if (cellValue == 1) {
-                                        td.classList.add('green');
-                                    } else if (cellValue == 2) {
-                                        td.classList.add('yellow');
-                                    } else {
-                                        td.classList.add('grey');
+                                    for (let i = 0; i < 4; i++) {
+                                        const td = document.createElement('td');
+                                        const cellValue = cell || 0; // 값이 없으면 0으로 설정
+                                        if (cellValue == 1) {
+                                            td.classList.add('green');
+                                        } else if (cellValue == 2) {
+                                            td.classList.add('yellow');
+                                        } else {
+                                            td.classList.add('grey');
+                                        }
+                                        tr.appendChild(td);
                                     }
-                                    tr.appendChild(td);
-                                    
                                 }
                             });
                             tableBody.appendChild(tr);
