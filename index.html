@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데이터 시각화</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 8px;
+        }
+        .green {
+            background-color: green;
+            color: white;
+        }
+        .yellow {
+            background-color: yellow;
+        }
+        .grey {
+            background-color: rgb(236, 229, 229);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h2>데이터 시각화</h2>
+    <input type="file" id="upload" />
+    <table id="data-table">
+        <thead>
+            <tr id="header-row">
+                <th>이름</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('upload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                const headerRow = document.getElementById('header-row');
+                const tableBody = document.querySelector('#data-table tbody');
+                tableBody.innerHTML = ''; // 기존 테이블 내용 비우기
+                
+                // 헤더 생성
+                const headers = jsonData[0];
+                headers.forEach((header, colIndex) => {
+                    if (colIndex > 0) {
+                        const th = document.createElement('th');
+                        th.setAttribute('colspan', 4);
+                        th.textContent = header;
+                        headerRow.appendChild(th);
+                    }
+                });
+
+                // 데이터 행 생성
+                jsonData.forEach((row, rowIndex) => {
+                    if (rowIndex > 0) { // 헤더를 제외한 행
+                        const tr = document.createElement('tr');
+                        row.forEach((cell, colIndex) => {
+                            if (colIndex === 0) {
+                                const td = document.createElement('td');
+                                td.textContent = cell;
+                                tr.appendChild(td);
+                            } else {
+                                const td = document.createElement('td');
+                                if (cell == 1) {
+                                    td.classList.add('green');
+                                } else if (cell == 2) {
+                                    td.classList.add('yellow');
+                                } else {
+                                    td.classList.add('grey');
+                                }
+                                tr.appendChild(td);
+                            }
+                        });
+                        tableBody.appendChild(tr);
+                    }
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+</html>
