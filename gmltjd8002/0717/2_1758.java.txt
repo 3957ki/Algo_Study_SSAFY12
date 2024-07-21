@@ -1,0 +1,23 @@
+import java.io.*;
+import java.util.*;
+// 팁 :  원래 줄 돈   -  등수- 1
+//     customer[i] -  (i+1-1)
+// customer[i] - i
+public class Main {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine()); // 사람 수
+		Integer[] customer = new Integer[N]; // 손님 배열 초기화
+		long tip = 0; // 10만명이 10만번 팁을 주면 int 범위를 벗어남
+		for(int i=0; i<N;i++) {
+			customer[i] = Integer.parseInt(br.readLine()); // 손님 배열 
+		}
+		Arrays.sort(customer, Collections.reverseOrder()); // 배열 정렬, int[]로 선언시 에러가 발생해서 customer을 Integer로 선언, 내림차순
+		
+		for(int i=0; i<N;i++) {
+			tip += ((customer[i] - i > 0) ? (customer[i] - i) : 0);  // customer[i] - ({i+1}-1)
+		}
+		
+		System.out.println(tip);
+	}
+}
