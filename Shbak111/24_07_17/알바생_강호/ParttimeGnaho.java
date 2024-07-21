@@ -1,49 +1,39 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public PriorityQueue<Integer> queue = new PriorityQueue<>((a, b) -> b - a);
+    public int solution(int[] arr) {
+        long answer = 0;
+        int count = 0;
+        Arrays.sort(arr);
 
-    public void solution(int[] arr, String now, int limit, int length) {
-        if (now.length() > 0 && now.length() <= length) {
-            if (Integer.parseInt(now) <= limit) {
-                queue.offer(Integer.parseInt(now));
-            }
-
-        }
-        if (now.length() > 0 && now.length() == length) {
-            return;
+        for(int i = arr.length - 1;i >= 0;i--) {
+            if(arr[i] - count >= 0)
+                answer += arr[i] - count;
+            count++;
         }
 
-        for (int i = 0; i < arr.length; i++) {
-            String tmp = now + arr[i];
-            solution(arr, tmp, limit, length);
-        }
-
+        System.out.println(answer);
+        return 0;
     }
 
-    public static void main(String[] args) throws Exception {
-        //System.setIn(new FileInputStream("res/bignumber.txt"));
+
+    public static void main(String[] args) throws Exception{
+        //System.setIn(new FileInputStream("res/parttime.txt"));
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer st = new StringTokenizer(bf.readLine());
-        int limit = Integer.parseInt(st.nextToken());
         int size = Integer.parseInt(st.nextToken());
-
-        StringTokenizer st2 = new StringTokenizer(bf.readLine());
         int[] arr = new int[size];
-        for (int i = 0; i < size; i++) {
+
+        for(int i = 0;i < size;i++) {
+            StringTokenizer st2 = new StringTokenizer(bf.readLine());
             arr[i] = Integer.parseInt(st2.nextToken());
         }
 
-        Main bn = new Main();
-        String lstring = limit + "";
-
-        bn.solution(arr, "", limit, lstring.length());
-
-        int answer = bn.queue.peek();
-        System.out.println(answer);
+        Main p = new Main();
+        p.solution(arr);
     }
 }
