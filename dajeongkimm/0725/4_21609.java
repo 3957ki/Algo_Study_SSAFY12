@@ -22,12 +22,15 @@ class Main {
             this.y = y;
         }
     }
+    
+    static boolean[][] globalVisited;
     static ArrayList<Node> bigBlock;
     static ArrayList<Node> testBlock;
     public static void main (String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
+        boolean debug = false;
         st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
@@ -41,60 +44,90 @@ class Main {
             }
         }
         int answer = 0;
+        int time = 1;
         //1. 크기가 가장 큰 블록
+        
         while (true){
+        	if (debug) {
+        		arrPrint(arr);
+        		System.out.println();
+        	}
             int cur_cnt = first();
-            System.out.println("tmp cnt: "+cur_cnt);
-            if (cur_cnt == 0) break;
+           
+            if (cur_cnt < 2) break;
             answer += cur_cnt*cur_cnt;
             //2. 블록 제거 , 점수획득
-            System.out.println("tmp answer: "+answer);
+            if (debug) {
+            	System.out.println(time+++": tmp answer: "+answer);
+            }
+            
             for (Node n : bigBlock) {
                 int x = n.x;
                 int y = n.y;
-                System.out.print(x+" "+y+"  ");
                 arr[x][y] = -2;
+                if (debug) {
+                	System.out.println("delete : "+x+" "+y);
+                }
             }
-            System.out.println();
+            if (debug) {
+            	System.out.println("After delete");
+        		arrPrint(arr);
+        		System.out.println();
+        	}
             //3. 중력 작용 (Gravity)
             Gravity(arr);
+            if (debug) {
+            	System.out.println("first gravity");
+        		arrPrint(arr);
+        		System.out.println();
+        	}
             //4. 90도 반시계 회전
             arr = Turn(arr);
+            if (debug) {
+            	System.out.println("90turn");
+        		arrPrint(arr);
+        		System.out.println();
+        	}
             //5. 중력 작용
             Gravity(arr);
+            if (debug) {
+            	System.out.println("second gravity");
+        		arrPrint(arr);
+        		System.out.println();
+        	}
         }
         System.out.println(answer);
 
     }
     private static int first(){
         bigBlock = new ArrayList<>();
-        visited = new boolean[N][N];
+        globalVisited = new boolean[N][N];
+        Node bestBlock = null;
         int cur_cnt = 0;
         int cur_rainbow = 0;
         for (int i=0;i<N;i++){
             for (int j=0;j<N;j++){
-                if (arr[i][j] == -1) visited[i][j] = true;
-                if (arr[i][j]>0) {
+                if (arr[i][j]>0 && globalVisited[i][j] == false) {
                     // i,j 가 기준 블록
                     // 무지개가 많은 블록 > 기준 블록의 행이 가장 큰 것 >  열이 가장 큰 것
                     testBlock = new ArrayList<>();
+                    globalVisited[i][j] = true;
+                    visited = new boolean[N][N];
                     int result[] = BFS(i,j,arr[i][j]);
                     int count = result[0];
-                    System.out.println(count);
                     int rainbow = result[1];
-                    if (cur_cnt<count){
-                        bigBlock = testBlock;
-                        cur_cnt = count;
-                    } else if (cur_cnt == count){
-                        if (cur_rainbow <= rainbow) {
-                            bigBlock = testBlock;
-                            cur_rainbow = rainbow;
-                        }
+                    
+                    if (cur_cnt<count || (cur_cnt==count && rainbow>=cur_rainbow)) {
+                    	bigBlock = new ArrayList<>(testBlock);
+                    	cur_rainbow = rainbow;
+                    	cur_cnt = count;
+                    	bestBlock = new Node(i, j);
                     }
+                   
                 }
             }
         }
-        return cur_cnt;
+        return bigBlock.size();
     }
     private static int[] BFS(int x, int y, int color){
         ArrayDeque<int[]> queue = new ArrayDeque<>();
@@ -109,21 +142,30 @@ class Main {
             int cur_y = tmp[1];
             int count = tmp[2];
             int rainbow = tmp[3];
-            result_count = Math.max(result_count,count);
-            result_rainbow = Math.max(result_rainbow, rainbow);
             testBlock.add(new Node(cur_x, cur_y));
+            
+            result_count = count;
+            result_rainbow = rainbow;
+            
+//            result_count = Math.max(result_count,count);
+//            result_rainbow = Math.max(result_rainbow, rainbow);
+            
             for (int i=0;i<4;i++){
                 int nx = cur_x + dx[i];
                 int ny = cur_y + dy[i];
-                if (arr[cur_x][cur_y] == 0) rainbow++;
+                
 
                 if (nx>=0 && nx<N && ny>=0 && ny<N && !visited[nx][ny]){
                     if (arr[nx][ny] == 0 || arr[nx][ny] == color) {
+                    	if (arr[nx][ny] == 0) rainbow++;
                         queue.add(new int[]{nx, ny, count+1, rainbow});
                         visited[nx][ny] = true;
+                        if (arr[nx][ny] == color) globalVisited[nx][ny] = true;
                     }
                 }
             }
+//            result_count = count;
+//            result_rainbow = rainbow;
         }
         return new int[]{result_count, result_rainbow};
     }
@@ -133,19 +175,13 @@ class Main {
         for (int i=N-2;i>=0;i--){
             for (int j=0;j<N;j++){
                 if (arr[i][j] > -1){
-                    int cur_num = arr[i][j];
                     int cur_i = i;
-                    while (true){
-                        cur_i++;
-
-                        if (cur_i<N || arr[cur_i][j] != -1) {
-                            cur_i--;
-                            break;
-                        }
-
+                    while (cur_i +1 <N && arr[cur_i+1][j] == -2) {
+                    	arr[cur_i+1][j] = arr[cur_i][j];
+                    	arr[cur_i][j] = -2;
+                    	cur_i++;
                     }
-                    arr[cur_i][j] = cur_num;
-                    arr[i][j] = -2;
+                    
                 }
             }
         }
@@ -159,5 +195,15 @@ class Main {
             }
         }
         return new_arr;
+    }
+    
+    private static void arrPrint(int[][] arr) {
+    	for (int i=0;i<N;i++) {
+    		for (int j=0;j<N;j++) {
+    			System.out.print(arr[i][j]);
+    		}
+    		System.out.println();
+    	}
+    	
     }
 }
