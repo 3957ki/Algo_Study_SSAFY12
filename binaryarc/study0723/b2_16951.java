@@ -1,4 +1,4 @@
-package allgostudy0723;
+package study0723;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
