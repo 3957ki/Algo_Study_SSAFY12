@@ -65,7 +65,7 @@ public class p4_21609 {
 						int x = node.x;
 						int y = node.y;
 						for (int d = 0; d < 4; d++) {
-//							방문하지 않았고, 무지개이거나 같은색깔 블러이면 삽입
+//							방문하지 않았고, 무지개이거나 같은색깔 블럭이면 삽입
 							if (!Qvisited[y + dy[d]][x + dx[d]]
 									&& (arr[y + dy[d]][x + dx[d]] == 0 || arr[y + dy[d]][x + dx[d]] == color)) {
 								queue.add(new Node(y + dy[d], x + dx[d]));
@@ -131,7 +131,7 @@ public class p4_21609 {
 					if (arr[i][j] < 0) {
 						continue;
 					}
-//					블럭 아래가 빈 공간이 아니면 블럭 1씩 이동 반복
+//					블럭 아래가 빈 공간이면 블럭 1씩 이동 반복
 					int k = 0;
 					while (arr[i + 1 + k][j] == -2) {
 						arr[i + 1 + k][j] = arr[i + k][j];
