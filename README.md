@@ -22,6 +22,7 @@
 7. 이진호_1252336 (binaryarc)
 8. 백승훈_1253721 (shbak111)
 9. 김다정_1257588 (rlaekwjd6545)
+10. 최영환_1250019 (dlsxj101)
 
 ![Data Chart](./temp.png)
 
