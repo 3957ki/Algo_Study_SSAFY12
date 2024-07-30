@@ -1,56 +1,113 @@
 package study0730;
 //백준 17141
-//연구소
+//연구소 2
 
 //바이러스 M개를 놓을 곳 배열로 구해두기
 //바이러스 위치 배열 순회하며 bfs
-//bfs 끝날때마다 시간 최대값으로
+//bfs 끝날때마다 시간 최소값으로 업데이트
 import java.io.*;
 import java.util.*;
 public class b3_17141 {
-	public static class position{
+	public static class Position{
 		int x;
 		int y;
-		public position(int x,int y) {
+		public Position(int x,int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
-	static ArrayList<ArrayList<position>> virusPostionArr;
-	static ArrayList<position> tempPostion;
+	static ArrayList<ArrayList<Position>> virusPositionArr;
+	static ArrayList<Position> tempPosition;
 	static int[][] map;
 	static int N,M;
+	static final int[] dx = {-1,1,0,0};
+	static final int[] dy = {0,0,-1,1};
+	static int emptyCount = 0;
+	static int infectedCount =0;
 	
-	
-	public static void savePosition(int idx,ArrayList<position> temp) {
-		
+	public static void savePosition(int idx,ArrayList<Position> temp) {
 		if(temp.size() == M) {
-			virusPostionArr.add(new ArrayList<position>(temp));
+			virusPositionArr.add(new ArrayList<Position>(temp));
 			return;
 		}
-		for(int i = idx ; i < tempPostion.size() ; i++) {
-			temp.add(tempPostion.get(i));
-			savePosition(i+1,temp);
+		for(int i = idx ; i < tempPosition.size() ; i++) {
+			temp.add(tempPosition.get(i));
+			savePosition( i + 1,temp);
 			temp.remove(temp.size()-1);
 		}
+	}
+	
+	public static int bfs(ArrayList<Position> list) {
+		Queue<Position> queue = new LinkedList<>();
+		boolean[][] visited = new boolean[N][N];
+		int[][] time = new int[N][N];
+		int maxTime = 0;
+
+		
+		
+		for(Position p : list) {
+			queue.add(p);
+			visited[p.x][p.y] = true;
+		}
+		
+		while(!queue.isEmpty()) {
+			Position p = queue.poll();
+			for(int i=0;i<4;i++) {
+				int nx = p.x + dx[i];
+				int ny = p.y + dy[i];
+				if(nx >=0 && nx < N && ny >= 0 && ny < N 
+						&& !visited[nx][ny] && map[nx][ny] != 1) {
+					visited[nx][ny] = true;
+					time[nx][ny] = time[p.x][p.y] + 1;
+					maxTime = Math.max(maxTime, time[nx][ny]);
+					queue.add(new Position(nx, ny));
+					if(map[nx][ny] == 0)infectedCount++;
+				}
+			}
+		}
+		
+//		//모든곳 감염 됐는지 확인
+//		for(int i=0 ; i<N ; i++) {
+//			for(int j=0 ; j<N ; j++) {
+//				if(map[i][j] == 0 && !visited[i][j]) {
+//					return Integer.MAX_VALUE;
+//				}
+//			}
+//		}
+
+		return (infectedCount == emptyCount) ? maxTime : Integer.MAX_VALUE;
+		
 	}
 	
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		
 		N = Integer.parseInt(st.nextToken()); // 연구소의 크기 N
 		M = Integer.parseInt(st.nextToken()); //바이러스 개수
-		virusPostionArr = new ArrayList<ArrayList<position>>();
-		tempPostion = new ArrayList<position>();
+		
+		virusPositionArr = new ArrayList<ArrayList<Position>>();
+		tempPosition = new ArrayList<Position>();
 		map = new int[N][N];
+		
 		for(int i=0;i<N;i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j=0;j<N;j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
-				if(map[i][j] == 2)tempPostion.add(new position(i, j));
+				if(map[i][j] == 2)tempPosition.add(new Position(i, j));
+				if(map[i][j] == 0)emptyCount++;
 			}
 		}
 		
-		savePosition(0, new ArrayList<position>());
+		savePosition(0, new ArrayList<Position>());
+		
+		int minTime = Integer.MAX_VALUE;
+		for(ArrayList<Position> virusList : virusPositionArr) {
+			int time = bfs(virusList);
+			minTime = Math.min(minTime,time);
+		}
+		
+		System.out.println(minTime == Integer.MAX_VALUE ? -1 : minTime);
+		
 	}
 }
