@@ -1,4 +1,4 @@
-package algostudy0717;
+package study0717;
 
 import java.io.*;
 import java.util.*;
