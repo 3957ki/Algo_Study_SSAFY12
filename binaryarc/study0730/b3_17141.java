@@ -22,12 +22,11 @@ public class b3_17141 {
 	static int N,M;
 	static final int[] dx = {-1,1,0,0};
 	static final int[] dy = {0,0,-1,1};
-	static int emptyCount = 0;
-	static int infectedCount =0;
+	static int emptyCnt;
 	
 	public static void savePosition(int idx,ArrayList<Position> temp) {
 		if(temp.size() == M) {
-			virusPositionArr.add(new ArrayList<Position>(temp));
+			virusPositionArr.add(new ArrayList<>(temp));
 			return;
 		}
 		for(int i = idx ; i < tempPosition.size() ; i++) {
@@ -39,15 +38,17 @@ public class b3_17141 {
 	
 	public static int bfs(ArrayList<Position> list) {
 		Queue<Position> queue = new LinkedList<>();
-		boolean[][] visited = new boolean[N][N];
+		//boolean[][] visited = new boolean[N][N];
 		int[][] time = new int[N][N];
+		for(int i = 0;i < N;i++) for(int j = 0;j < N;j++) time[i][j] = -1;
 		int maxTime = 0;
-
+		int infectedCnt=0;
 		
 		
 		for(Position p : list) {
 			queue.add(p);
-			visited[p.x][p.y] = true;
+			time[p.x][p.y] = 0;
+			infectedCnt++;
 		}
 		
 		while(!queue.isEmpty()) {
@@ -56,26 +57,20 @@ public class b3_17141 {
 				int nx = p.x + dx[i];
 				int ny = p.y + dy[i];
 				if(nx >=0 && nx < N && ny >= 0 && ny < N 
-						&& !visited[nx][ny] && map[nx][ny] != 1) {
-					visited[nx][ny] = true;
+						&& time[nx][ny] == -1 && map[nx][ny] != 1) {
 					time[nx][ny] = time[p.x][p.y] + 1;
 					maxTime = Math.max(maxTime, time[nx][ny]);
 					queue.add(new Position(nx, ny));
-					if(map[nx][ny] == 0)infectedCount++;
+					if(map[nx][ny] == 0 || map[nx][ny] == 2)infectedCnt++;
 				}
 			}
 		}
 		
-//		//모든곳 감염 됐는지 확인
-//		for(int i=0 ; i<N ; i++) {
-//			for(int j=0 ; j<N ; j++) {
-//				if(map[i][j] == 0 && !visited[i][j]) {
-//					return Integer.MAX_VALUE;
-//				}
-//			}
-//		}
-
-		return (infectedCount == emptyCount) ? maxTime : Integer.MAX_VALUE;
+		
+		
+		
+		//모든곳 감염 됐는지 확인
+		return (infectedCnt == emptyCnt) ? maxTime : Integer.MAX_VALUE;
 		
 	}
 	
@@ -89,13 +84,14 @@ public class b3_17141 {
 		virusPositionArr = new ArrayList<ArrayList<Position>>();
 		tempPosition = new ArrayList<Position>();
 		map = new int[N][N];
+		emptyCnt=0;
 		
 		for(int i=0;i<N;i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j=0;j<N;j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
+				if(map[i][j] == 0 || map[i][j] == 2)emptyCnt++;
 				if(map[i][j] == 2)tempPosition.add(new Position(i, j));
-				if(map[i][j] == 0)emptyCount++;
 			}
 		}
 		
@@ -108,6 +104,7 @@ public class b3_17141 {
 		}
 		
 		System.out.println(minTime == Integer.MAX_VALUE ? -1 : minTime);
-		
+		br.close();
+		return ;
 	}
 }
