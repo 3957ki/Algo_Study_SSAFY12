@@ -3,7 +3,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+<<<<<<< HEAD
 public class SnakeBird {
+=======
+public class BJ_study_1_16435 {
+>>>>>>> 0c06d3e7576e0891531cf10c11e002f9327b53ca
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -33,5 +37,9 @@ public class SnakeBird {
 		}
 		System.out.println(L);
 	}
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> 0c06d3e7576e0891531cf10c11e002f9327b53ca
