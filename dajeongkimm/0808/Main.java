@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 public class Main {
 	static int N, M;
 	static int[][] board;
+	static boolean[][] visited;
 	static int[] dx = {-1,1,0,0};
 	static int[] dy = {0,0,1,-1};
 
@@ -29,21 +30,55 @@ public class Main {
 		
 		int answer_time = 0;
 		int cheese_cnt = 0;
+		int cheese_before = 0;
+		
 		while (true) {
+			int break_condition = 0;
+			
+			visited = new boolean[N][M];
+			int tmp = 0;
 			for (int i=0;i<N;i++) {
 				for (int j=0;j<M;j++) {
-					if (board[i][j] == 1) {
+					if (!visited[i][j] && board[i][j] == 1) {
 						cheese(i,j);
+						break_condition++;
 					}
 				}
 			}
+			
+			if (break_condition == 0) {
+				System.out.println("-------------------");
+				System.out.println(answer_time);
+				System.out.println(cheese_cnt);
+				break;
+			}
+			
+			for (int i=0;i<N;i++) {
+				for (int j=0;j<M;j++) {
+					if (board[i][j] == 2) {
+						tmp++;
+						board[i][j] = 0;
+					}
+				}
+			}
+			
+			printArr(board);
+			cheese_before = cheese_cnt;
+			cheese_cnt = tmp;
+			
+			answer_time++;
+			
+//			System.out.println(answer_time+"초");
+//			System.out.println(cheese_before);
+//			System.out.println(cheese_cnt);
+			
 		}
 		
 		
 	}
 	
 	private static void cheese(int x, int y) {
-		boolean[][] visited = new boolean[N][M];
+		int remove_cheese = 0;
 		ArrayDeque<int[]> queue = new ArrayDeque<>();
 		queue.add(new int[] {x,y});
 		visited[x][y] = true;
@@ -79,6 +114,17 @@ public class Main {
 		}
 		
 		
+		
+	}
+	
+	private static void printArr(int[][] arr) {
+		for (int i=0;i<arr.length;i++) {
+			for (int j=0;j<arr[0].length;j++) {
+				System.out.print(arr[i][j]+" ");
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 }
