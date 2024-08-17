@@ -5,20 +5,20 @@ import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
 /**
- * 1. ë°©ì˜ ê°œìˆ˜
- * 2. ê°€ì¥ ë„“ì€ ë°©ì˜ ë„“ì´
- * 3. í•˜ë‚˜ì˜ ë²½ì„ ì œê±° -> ê°€ì¥ ë„“ì€ ë°©ì˜ ë„“ì´
+ * 1. ¹æÀÇ °³¼ö
+ * 2. °¡Àå ³ĞÀº ¹æÀÇ ³ĞÀÌ
+ * 3. ÇÏ³ªÀÇ º®À» Á¦°Å -> °¡Àå ³ĞÀº ¹æÀÇ ³ĞÀÌ
  *
  * Integer.toBinaryString(num)
  */
-public class Main_3_2234 {
+public class Main_¼º°û {
     static int N,M;
 
     static int[][] arr;
 
-    //ë‚¨ 8 ë™ 4 ë¶ 2 ì„œ 1
-    static int[] dx = {1,0,-1,0};
-    static int[] dy = {0,1,0,-1};
+    //³² 8 µ¿ 4 ºÏ 2 ¼­ 1
+    static int[] dx = {0,-1,0,1};
+    static int[] dy = {-1,0,1,0};
 
     static boolean[][] visited;
 
@@ -57,7 +57,7 @@ public class Main_3_2234 {
             }
         }
 
-        //í•˜ë‚˜ì˜ ë²½ ì œê±° ì´í›„
+        //ÇÏ³ªÀÇ º® Á¦°Å ÀÌÈÄ
 //        for (int i=0;i<N;i++){
 //            for (int j=0;j<M;j++){
 //                int cur_num = arr[i][j];
@@ -114,24 +114,20 @@ public class Main_3_2234 {
             int cur_y = cur[1];
 
             int cur_num = arr[cur_x][cur_y];
-            String cur_binary = String.format("%04d", Integer.parseInt(Integer.toBinaryString(cur_num)));
-            int idx = -1;
-
-            for (char c : cur_binary.toCharArray()){
-                idx++;
-                if (c == '0') {
-                    int nx = cur_x+dx[idx];
-                    int ny = cur_y+dy[idx];
-
-                    if (nx>=0 && nx<N && ny>=0 && ny<M){
-                        if (visited[nx][ny] == false){
-                            visited[nx][ny] = true;
-                            result++;
-                            queue.add(new int[]{nx,ny});
-                        }
-                    }
-                }
+            
+            for (int k=0;k<4;k++) {
+            	if ((cur_num&(1<<k)) == 0) {
+            		int nx = cur_x+dx[k];
+            		int ny = cur_y+dy[k];
+            		
+            		if (!visited[nx][ny]) {
+            			visited[nx][ny] = true;
+            			result++;
+            			queue.add(new int[] {nx,ny});
+            		}
+            	}
             }
+            
 
         }
 
