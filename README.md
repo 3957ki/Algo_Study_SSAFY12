@@ -4,9 +4,9 @@
 
 일시 : 매주 화/목 오후 9시 ~ 11시
 
-문제 : 백준 실버 4 ~ 골드 1 중 4문제
+문제 : 백준 실버 ~ 골드 4문제
 
-시간 : 1시간 30분 라이브 코딩, 30분 풀이 및 발표
+시간 : 1시간 30분 디스코드 라이브 코딩, 30분 풀이 및 발표
 
 ## 스터디원
 
@@ -24,22 +24,6 @@
 9. 김다정_1257588 (rlaekwjd6545)
 10. 최영환_1250019 (dlsxj101)
 
-<div style="width: 400px; height: 200px; position: relative; border-left: 2px solid black; border-bottom: 2px solid black;">
-  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 10%; bottom: 50%;"></div>
-  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 30%; bottom: 70%;"></div>
-  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 50%; bottom: 40%;"></div>
-  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 70%; bottom: 60%;"></div>
-  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 90%; bottom: 20%;"></div>
-  <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
-    <polyline points="10,100 30,60 50,120 70,80 90,160" style="fill:none;stroke:red;stroke-width:2"/>
-  </svg>
-</div>
-
-
-### Non SSAFY
-
-0. 이름 (백준아이디)
-1. soyoung (jeong52)
 
 ## 스터디 규칙
 
