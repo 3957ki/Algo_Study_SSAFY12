@@ -24,6 +24,9 @@
 9. 김다정_1257588 (rlaekwjd6545)
 10. 최영환_1250019 (dlsxj101)
 
+### Non SSAFY
+
+1. soyoung (jeong52)
 
 ## 스터디 규칙
 
