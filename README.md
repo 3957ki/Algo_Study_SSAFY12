@@ -24,7 +24,21 @@
 9. 김다정_1257588 (rlaekwjd6545)
 10. 최영환_1250019 (dlsxj101)
 
-![Data Chart](./temp.png)
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="50,150 100,100 150,120 200,80 250,60 300,90 350,70" 
+            stroke="black" fill="none" stroke-width="2" />
+  <!-- X축과 Y축 그리기 -->
+  <line x1="50" y1="150" x2="50" y2="50" stroke="black" stroke-width="2"/>
+  <line x1="50" y1="150" x2="350" y2="150" stroke="black" stroke-width="2"/>
+  <!-- 점에 텍스트 표시 -->
+  <text x="50" y="160" fill="black">Jan</text>
+  <text x="100" y="160" fill="black">Feb</text>
+  <text x="150" y="160" fill="black">Mar</text>
+  <text x="200" y="160" fill="black">Apr</text>
+  <text x="250" y="160" fill="black">May</text>
+  <text x="300" y="160" fill="black">Jun</text>
+  <text x="350" y="160" fill="black">Jul</text>
+</svg>
 
 ### Non SSAFY
 
