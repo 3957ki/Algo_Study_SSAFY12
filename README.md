@@ -24,7 +24,17 @@
 9. 김다정_1257588 (rlaekwjd6545)
 10. 최영환_1250019 (dlsxj101)
 
-<p> HI </p>
+<div style="width: 400px; height: 200px; position: relative; border-left: 2px solid black; border-bottom: 2px solid black;">
+  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 10%; bottom: 50%;"></div>
+  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 30%; bottom: 70%;"></div>
+  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 50%; bottom: 40%;"></div>
+  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 70%; bottom: 60%;"></div>
+  <div style="width: 2px; height: 2px; background-color: red; position: absolute; left: 90%; bottom: 20%;"></div>
+  <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0;">
+    <polyline points="10,100 30,60 50,120 70,80 90,160" style="fill:none;stroke:red;stroke-width:2"/>
+  </svg>
+</div>
+
 
 ### Non SSAFY
 
