@@ -1,4 +1,4 @@
-package src;
+package src.study0820;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 //5 6
 //1 9
 //-2 -8
-public class BOJ_1_Greedy_14400 {
+public class Main_1번_편의점2_그리디 {
     static int N;
     static int[] x;
     static int[] y;

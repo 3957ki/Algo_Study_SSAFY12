@@ -1,11 +1,11 @@
-package src.a0822.study;
+package src.study0822;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-public class BOJ_2_NP_1342 {
+public class Main_2번_행운의문자열_넥퍼 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringBuilder sb = new StringBuilder();
     static char[] arr;

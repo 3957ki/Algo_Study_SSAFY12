@@ -1,4 +1,4 @@
-package src.a0822.study;
+package src.study0822;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class BOJ_1_Greedy_11508 {
+public class Main_1번_2더하기1세일_그리디 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringBuilder sb = new StringBuilder();
     static int N;
