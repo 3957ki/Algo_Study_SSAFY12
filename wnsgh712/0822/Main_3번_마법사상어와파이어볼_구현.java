@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,31 +34,27 @@ public class Main_3번_마법사상어와파이어볼_구현 {
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             List<F> li = new ArrayList<>();
-            P p = new P(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+            P p = new P(Integer.parseInt(st.nextToken())-1, Integer.parseInt(st.nextToken())-1);
             int m = Integer.parseInt(st.nextToken());
-            int d = Integer.parseInt(st.nextToken());
             int s = Integer.parseInt(st.nextToken());
-            li.add(new F(p, m, d, s));
+            int d = Integer.parseInt(st.nextToken());
+            li.add(new F(p, m, s, d));
             fBalls.put(p, li);
         }
 
         for (int k = 0; k < K; k++) {
             // 맵안의 모든 파이어볼에 대해서
-        	Iterator<List<F>> iter = fBalls.values().iterator();
-            while(iter.hasNext()) {
-            	List<F> l = iter.next();
-                for (int i = 0; i < l.size(); i++) {
-                    F fBall = l.remove(i);
-
-                    if (fBall.isMoved) continue;
+            List<List<F>> values = fBalls.values().stream().toList();
+            for (int i = 0; i < values.size(); i++) {
+                List<F> l = values.get(i);
+                for (int j = l.size()-1; j >= 0; j--) {
+                    F fBall = l.remove(j);
                     P p = fBall.move();
                     if (fBalls.get(p) != null) {
-                    	fBalls.get(p).add(fBall);	
+                        fBalls.get(p).add(fBall);
                     } else {
-                    	fBalls.put(p, new ArrayList<>());
+                        fBalls.put(p, new ArrayList<>(){{add(fBall);}});
                     }
-                    
-                    fBall.isMoved = true;
                 }
             }
 
@@ -65,7 +62,10 @@ public class Main_3번_마법사상어와파이어볼_구현 {
             for (P p: fBalls.keySet()) {
                 List<F> li = fBalls.get(p);
                 if (li.size() >= 2) {
+                    System.out.println(k);
+                    System.out.println(li);
                     divide(li);
+                    System.out.println(li);
                 }
             }
         }
@@ -81,7 +81,6 @@ public class Main_3번_마법사상어와파이어볼_구현 {
     private static void divide(List<F> list) {
         //같은 칸에 있는 파이어볼은 모두 하나로 합쳐진다.
         int mSum = 0;
-        int dSum = 0;
         int sSum = 0;
         int fCnt = list.size();
         P p = null;
@@ -92,30 +91,27 @@ public class Main_3번_마법사상어와파이어볼_구현 {
             p = f.p;
             mSum += f.m;
             sSum += f.s;
-            dSum += f.d;
             if (dir != f.d % 2) {
             	dirFlag = false;
             }
         }
         //질량은 ⌊(합쳐진 파이어볼 질량의 합)/5⌋이다.
-        int m = (int) (double) mSum / 5;
+        int m = mSum / 5;
         //속력은 ⌊(합쳐진 파이어볼 속력의 합)/(합쳐진 파이어볼의 개수)⌋이다.
-        int s = (int) (double) sSum / 5;
+        int s = sSum / fCnt;
         //질량이 0인 파이어볼은 소멸되어 없어진다.
         if (m == 0) return;
-        
-        List<F> li = new ArrayList<>();
+
         //파이어볼은 4개의 파이어볼로 나누어진다.
         for (int i = 0; i < 8; i+=2) {
         	//합쳐지는 파이어볼의 방향이 모두 홀수이거나 모두 짝수이면, 방향은 0, 2, 4, 6이 되고, 그렇지 않으면 1, 3, 5, 7이 된다.
         	if (dirFlag) {
-        		li.add(new F(p, m, i, s));
+        		list.add(new F(p, m, s, i));
         	} else {
-        		li.add(new F(p, m, i+1, s));
+        		list.add(new F(p, m, s, i+1));
         	}	
 		}
-        
-        list = li;
+
     }
 
 
@@ -155,29 +151,28 @@ public class Main_3번_마법사상어와파이어볼_구현 {
     static class F {
         P p;
         int m, d, s;
-        boolean isMoved;
-        public F(P p, int m, int d, int s) {
+        public F(P p, int m, int s, int d) {
             this.p = p;
             this.m = m;
             this.d = d;
             this.s = s;
-            this.isMoved = false;
         }
         public P move() {
             // 이동하려는 방향이 좌표계보다 큰경우 열 또는 형의 반대편으로 다시 이동시켜주기
-            int nx = (p.x + dx[d] * s) % N;
-            int ny = (p.x + dx[d] * s) % N;
+            int nx = (p.x + N + dx[d] * (s%N)) % N;
+            int ny = (p.y + N + dy[d] * (s%N)) % N;
             if (nx < 0) {
                 nx += N;
             }
             if (ny < 0) {
                 ny += N;
             }
-            return new P(nx, ny);
+            this.p = new P(nx,ny);
+            return this.p;
         }
 		@Override
 		public String toString() {
-			return "p=" + p + ", m=" + m + ", d=" + d + ", s=" + s + ", isMoved=" + isMoved;
+			return "p=" + p + ", m=" + m + ", d=" + d + ", s=" + s;
 		}
         
     }
