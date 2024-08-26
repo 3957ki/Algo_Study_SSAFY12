@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,13 +43,20 @@ public class Main_3번_마법사상어와파이어볼_구현 {
 
         for (int k = 0; k < K; k++) {
             // 맵안의 모든 파이어볼에 대해서
-            for (List<F> l : fBalls.values()) {
+        	Iterator<List<F>> iter = fBalls.values().iterator();
+            while(iter.hasNext()) {
+            	List<F> l = iter.next();
                 for (int i = 0; i < l.size(); i++) {
                     F fBall = l.remove(i);
 
                     if (fBall.isMoved) continue;
                     P p = fBall.move();
-                    fBalls.get(p).add(fBall);
+                    if (fBalls.get(p) != null) {
+                    	fBalls.get(p).add(fBall);	
+                    } else {
+                    	fBalls.put(p, new ArrayList<>());
+                    }
+                    
                     fBall.isMoved = true;
                 }
             }
@@ -61,6 +69,13 @@ public class Main_3번_마법사상어와파이어볼_구현 {
                 }
             }
         }
+        int answer = 0;
+        for (List<F> l : fBalls.values()) {
+        	for (int i = 0; i < l.size(); i++) {
+				answer += l.get(i).m;
+			}
+        }
+        System.out.println(answer);
     }
 
     private static void divide(List<F> list) {
@@ -69,21 +84,38 @@ public class Main_3번_마법사상어와파이어볼_구현 {
         int dSum = 0;
         int sSum = 0;
         int fCnt = list.size();
+        P p = null;
+        boolean dirFlag = true;
+        int dir = list.get(0).d % 2; // true = 홀수
         for (int i = 0; i < fCnt; i++) {
             F f = list.remove(0);
+            p = f.p;
             mSum += f.m;
             sSum += f.s;
             dSum += f.d;
+            if (dir != f.d % 2) {
+            	dirFlag = false;
+            }
         }
-        int m = (int) (double) mSum / 5;
-        if ()
-        //파이어볼은 4개의 파이어볼로 나누어진다.
         //질량은 ⌊(합쳐진 파이어볼 질량의 합)/5⌋이다.
+        int m = (int) (double) mSum / 5;
         //속력은 ⌊(합쳐진 파이어볼 속력의 합)/(합쳐진 파이어볼의 개수)⌋이다.
-        //합쳐지는 파이어볼의 방향이 모두 홀수이거나 모두 짝수이면, 방향은 0, 2, 4, 6이 되고, 그렇지 않으면 1, 3, 5, 7이 된다.
+        int s = (int) (double) sSum / 5;
         //질량이 0인 파이어볼은 소멸되어 없어진다.
-
-        return;
+        if (m == 0) return;
+        
+        List<F> li = new ArrayList<>();
+        //파이어볼은 4개의 파이어볼로 나누어진다.
+        for (int i = 0; i < 8; i+=2) {
+        	//합쳐지는 파이어볼의 방향이 모두 홀수이거나 모두 짝수이면, 방향은 0, 2, 4, 6이 되고, 그렇지 않으면 1, 3, 5, 7이 된다.
+        	if (dirFlag) {
+        		li.add(new F(p, m, i, s));
+        	} else {
+        		li.add(new F(p, m, i+1, s));
+        	}	
+		}
+        
+        list = li;
     }
 
 
@@ -110,6 +142,12 @@ public class Main_3번_마법사상어와파이어볼_구현 {
             this.x = x;
             this.y = y;
         }
+
+		@Override
+		public String toString() {
+			return "x=" + x + ", y=" + y;
+		}
+        
     }
 
     static int[] dx = {-1, -1, 0, 1, 1, 1, 0, -1};
@@ -137,5 +175,10 @@ public class Main_3번_마법사상어와파이어볼_구현 {
             }
             return new P(nx, ny);
         }
+		@Override
+		public String toString() {
+			return "p=" + p + ", m=" + m + ", d=" + d + ", s=" + s + ", isMoved=" + isMoved;
+		}
+        
     }
 }
