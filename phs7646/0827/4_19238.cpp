@@ -1,7 +1,7 @@
 #include<iostream>
 #include<queue>
 #include<vector>
-#define debug 0
+#define debug 1
 using namespace std;
 typedef pair<int,int> pp;
 int N;

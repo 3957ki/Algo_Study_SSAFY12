@@ -11,8 +11,8 @@ int main() {
     int N,M,K; cin >> N >> M >> K;
     for(int i = 0;i < N;i++) cin >> A[i];
 
-    //dp[i] = i번째를 마지막으로 포장했을 때?
-    //dp[i] = for j in 0..i : dp[j] + cost(j..i) O(N*M)
+    //dp[i] = i번째를 마지막으로 포장했을 때 최소비용
+    //dp[i] = for j in 0..i : dp[j] + cost(j..i)   : O(N*M)
     dp[0] = K; //single
     for(int i = 1;i < N;i++) {
         //calculate dp[i]
