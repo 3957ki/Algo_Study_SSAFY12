@@ -13,7 +13,7 @@ int main() {
     string b1,b2;cin >> b1; cin >> b2;
     int bL = b1.size();
 
-    vector<vector<int>> dp(100,vector<int>(2));//dp[i][0] : i번째 천사 돌다리를 j번째로 밟는 방법의 수
+    vector<vector<int>> dp(100,vector<int>(2));//dp[i][0] : i번째 천사 돌다리를 밟는 가짓수
     //step 0 build
     for(int i = 0;i < bL;i++) {
         if(b1[i] == magic[0]) dp[i][0] = 1;
