@@ -3,3 +3,6 @@
 ## 박준호
 
 
+### 복습노트 작성
+
+- [09/19일 목요일 스터디] (https://github.com/phs7646/Algo_Study_SSAFY12/tree/main/wnsgh712/0919)
