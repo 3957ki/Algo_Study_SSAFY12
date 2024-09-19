@@ -7,15 +7,15 @@ int N,C;
 int main() {
     cin >> N >> C;
     
-    vector<int> v(N);
+    vector<int> v;
     for(int i = 0;i < N;i++) {
-        cin >> v[i];
-        if(v[i] == C) { //한개 확인
+        int n; cin >> n;
+        if(n == C) { //한개 확인
             cout << 1;
             exit(0);
-        }
+        } else if(n < C) v.emplace_back(n); //C보다 큰건 필요없다..
     }
-
+    N = v.size();
     sort(v.begin(),v.end());
 
     //두개를 고르고, 두개보다 큰 인덱스에 대해 이분탐색!
