@@ -38,6 +38,8 @@ int main() {
             cursor++;
         }
 
+        
+
         if(answer < cur) {
             answer = cur;
             answer_elems = visited;
