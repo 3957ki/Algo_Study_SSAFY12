@@ -24,52 +24,52 @@ public class p3_2655 {
         // 밑면 면적 오름차순
         Arrays.sort(arr, (o1, o2) -> o1.area - o2.area);
 
-        // dp[i] = i번째 블럭을 1층으로 하는 탑의 정보
-        Node[] dp = new Node[N];
-        for (int i = 0; i < N; i++) dp[i] = new Node();
+        // dp[i] = 밑면이 i번째로 큰 블럭을 1층으로 했을 때 쌓을 수 있는 가장 높은 길이
+        int[] dp = new int[N];
 
         int maxHeight = 0;
         int answer = 0;
 
         for(int i = 0; i < N; i++) {
             Block now = arr[i];
-            dp[i].total = now.height;
-            dp[i].maxWeight = now.weight;
-            dp[i].list.add(now.num);
+            dp[i] = now.height;
 
             // now보다 작은 밑면 블럭들 탐색
             for(int j = i-1; j >= 0; j--) {
-                // now의 무게가 더 무겁고 dp[i]의 길이 총합보다 dp[j]의 길이 총합 + now의 길이가 더 길다면 쌓기
-                if(dp[j].maxWeight <= now.weight && dp[i].total < dp[j].total + now.height) {
-                    dp[i].total = dp[j].total + now.height;
-                    dp[i].list = new ArrayList<>();
-                    dp[i].list.add(now.num);
-                    dp[i].list.addAll(dp[j].list);
+                // now의 무게가 더 무겁고 dp[i] < dp[j] + now.height 라면 쌓기
+                if(arr[j].weight <= now.weight && dp[i] < dp[j] + now.height) {
+                    dp[i] = dp[j] + now.height;
+                    now.tail = arr[j];
+                    now.cnt = arr[j].cnt + 1;
                 }
             }
 
-            if(maxHeight < dp[i].total) {
-                maxHeight = dp[i].total;
+            if(maxHeight < dp[i]) {
+                maxHeight = dp[i];
                 answer = i;
             }
         }
 
-        sb.append(dp[answer].list.size()).append('\n');
-        Collections.reverse(dp[answer].list);
-        for (Integer num : dp[answer].list) {
-            sb.append(num).append('\n');
+        sb.append(arr[answer].cnt+1).append('\n');
+        Stack<Integer> stack = new Stack<>();
+        stack.push(arr[answer].num);
+        Block now = arr[answer];
+
+        while(now.tail != null){
+            stack.push(now.tail.num);
+            now = now.tail;
+        }
+
+        while(!stack.isEmpty()){
+            sb.append(stack.pop()).append('\n');
         }
 
         System.out.println(sb);
     }
 
-    static class Node {
-        int total, maxWeight;
-        List<Integer> list = new ArrayList<>();
-    }
-
     static class Block {
-        int num, area, height, weight;
+        int num, area, height, weight, cnt;
+        Block tail;
 
         public Block(int num, int area, int height, int weight) {
             this.num = num;
