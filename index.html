@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>백준 문제 풀이 현황</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      .grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+      }
+      .handle {
+        width: 100px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .boxes {
+        display: grid;
+        grid-template-columns: repeat(50, 15px);
+        gap: 2px;
+        justify-content: flex-end;
+      }
+
+      .box {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+      }
+      .pagination {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      .arrow {
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px;
+      }
+      .colors {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      .color-box {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>백준 문제 풀이 현황</h1>
+
+    <div class="grid" id="graph"></div>
+
+    <div class="pagination">
+      <span class="arrow" id="prev">⬅️</span>
+      <span id="page-info"></span>
+      <span class="arrow" id="next">➡️</span>
+    </div>
+
+    <script>
+      let pageSize = 50;
+      let currentPage = 0;
+      let data = {};
+      let problems = [];
+
+      async function loadData() {
+        const response = await fetch("boj_solved_data.json"); // JSON 데이터 가져오기
+        data = await response.json();
+
+        // 문제 리스트를 JSON 순서 그대로 가져오기
+        problems = data[Object.keys(data)[0]].map((problem) => problem.id); // 🔄 문제 리스트 추출 (순서 유지)
+
+        currentPage = 0;
+        render();
+      }
+
+      function render() {
+        const start = currentPage * pageSize;
+        const end = Math.min(start + pageSize, problems.length);
+        let visibleProblems = problems.slice(start, end);
+
+        const graph = document.getElementById("graph");
+        graph.innerHTML = ""; // 기존 내용 초기화
+
+        for (const [handle, solved] of Object.entries(data)) {
+          const row = document.createElement("div");
+          row.className = "row";
+
+          // 핸들 (고정 폭 + 가운데 정렬)
+          const handleElem = document.createElement("div");
+          handleElem.className = "handle";
+          handleElem.textContent = handle;
+          row.appendChild(handleElem);
+
+          // 문제 풀이 상태 잔디 (빈 칸 포함하여 오른쪽부터 채우기)
+          const boxes = document.createElement("div");
+          boxes.className = "boxes";
+
+          let filledBoxes = Array(50 - visibleProblems.length)
+            .fill(null)
+            .concat(visibleProblems);
+
+          filledBoxes.forEach((problem) => {
+            const box = document.createElement("div");
+            box.className = "box";
+            if (problem !== null) {
+              let solvedProblem = solved.find((p) => p.id === problem); // 🔄 문제 ID 그대로 가져오기
+              box.style.background = solvedProblem && solvedProblem.solved ? "#9be9a8" : "#ebedf0"; // 1이면 초록색, 0이면 회색
+            } else {
+              box.style.background = "transparent"; // 빈 칸
+            }
+            boxes.appendChild(box);
+          });
+
+          row.appendChild(boxes);
+          graph.appendChild(row);
+        }
+      }
+
+      document.getElementById("prev").addEventListener("click", () => {
+        if ((currentPage + 1) * pageSize < problems.length) {
+          currentPage++;
+          render();
+        }
+      });
+
+      document.getElementById("next").addEventListener("click", () => {
+        if (currentPage > 0) {
+          currentPage--;
+          render();
+        }
+      });
+
+      loadData();
+    </script>
+  </body>
+</html>
