@@ -16,20 +16,7 @@ handles = [
 ]
 
 # 최신 3문제 (이 문제들은 무조건 요청)
-force_update_problems = [
-    23843,
-    2295,
-    13168,
-    13398,
-    2479,
-    17490,
-    28449,
-    2310,
-    3663,
-    15553,
-    20955,
-    20440,
-]
+force_update_problems = [23300, 2073, 17951]
 
 
 # API 요청 함수
@@ -59,6 +46,7 @@ converted_result = {
 
 # API 요청이 필요한 경우에만 실행
 for handle in handles:
+    print(handle)
     updated_problems = []
 
     # 기존 데이터에서 풀이 여부가 0인 문제만 업데이트
