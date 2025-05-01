@@ -16,7 +16,7 @@ handles = [
 ]
 
 # 최신 3문제 (이 문제들은 무조건 요청)
-force_update_problems = [2666, 1083, 4179]
+force_update_problems = [16965, 26075, 2406]
 
 
 # API 요청 함수
