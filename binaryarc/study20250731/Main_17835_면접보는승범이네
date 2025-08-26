@@ -1,0 +1,66 @@
+import sys
+import heapq
+
+INF = float('inf')
+
+
+
+
+input = sys.stdin.readline
+
+N,M,K = map(int, input().split())
+
+graph = [[] for _ in range(N+1)]
+reverse_graph = [[] for _ in range(N+1)]
+dist_arr = [[] for _ in range(N+1)]
+
+for _ in range(M) :
+    U,V,C = map(int, input().split())
+    graph[U].append((V,C))
+    reverse_graph[V].append((U, C))
+
+end_arr = list(map(int, input().split()))
+
+def dijk(starts):
+    global N,M,K, graph
+
+    minDist = [INF] * (N+1)
+    pq = []
+
+    for s in starts :
+        minDist[s] = 0
+        heapq.heappush(pq, (0,s))
+
+    while pq :
+        cur_dist, cur_node = heapq.heappop(pq)
+
+        if cur_dist > minDist[cur_node]:
+            continue
+
+        for next, cost in reverse_graph[cur_node] :
+            new_cost = cur_dist + cost 
+
+            if new_cost < minDist[next] :
+                minDist[next] = new_cost
+                heapq.heappush(pq, (new_cost, next))
+
+    return minDist
+
+minDist = dijk(end_arr)
+
+ans_city = -1
+ans_dist = -1
+
+
+for start in range(1,N+1) :
+    if minDist[start] == INF:
+        continue
+    if ans_dist < minDist[start] or (ans_dist == minDist[start] and start < ans_city):
+        ans_dist = minDist[start]
+        ans_city = start
+
+    
+
+
+print(ans_city)
+print(ans_dist)

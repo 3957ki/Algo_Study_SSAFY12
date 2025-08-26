@@ -1,0 +1,44 @@
+import sys
+from collections import deque
+
+input = sys.stdin.readline
+
+
+N,M,K = map(int, input().split())
+
+
+grid = []
+
+
+
+for _ in range(N):
+    inp = input().strip()
+    grid.append([int(c) for c in inp])
+
+
+dq = deque([(0,0,1,0)])
+visited = [[[False]*(K+1) for _ in range(M)] for _ in range(N)]
+visited[0][0][0] = True
+ans = -1
+
+while dq :
+    r, c , step, wall = dq.popleft()
+    if r == N-1 and c == M-1 :
+        ans = step
+        break
+    for dr, dc in [(-1,0) , (1,0), (0,-1), (0,1)] :
+        nr, nc = r + dr, c + dc
+        if nr < 0 or nr >= N or nc < 0 or nc >= M :
+            continue
+
+        if grid[nr][nc] == 1 and wall < K and not visited[nr][nc][wall+1]:
+            visited[nr][nc][wall+1] = True
+            dq.append((nr,nc,step+1,wall+1))
+            
+        elif grid[nr][nc] == 0 and not visited[nr][nc][wall]:
+            visited[nr][nc][wall] = True
+            dq.append((nr,nc,step+1,wall))
+
+
+
+print(ans)
